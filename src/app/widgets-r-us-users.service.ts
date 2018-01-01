@@ -19,6 +19,10 @@ export class WidgetsRUsUserService {
       map(response => {
         console.log(response)
         return response
+      }),
+      catchError(error => {
+        console.log(error)
+        return Observable.of(error)
       })
     )
   }
@@ -28,6 +32,21 @@ export class WidgetsRUsUserService {
     return this.http.post<WidgetsRUsError | WidgetsRUsUser>(url, widgetsRUsUser).pipe(
       map(response => {
         console.log(response)
+        return response
+      }),
+      catchError(error => {
+        console.log(error)
+        return Observable.of(error)
+      })
+    )
+  }
+
+  logout() {
+    const url = `${this.wruApiUrl}/users/logout`
+    return this.http.post<WidgetsRUsUser | WidgetsRUsError>(url, {}).pipe(
+      map(response => {
+        console.log(response)
+        this.currentlyLoggedInAccount = <WidgetsRUsUser>{_id: '-1', username: ''}
         return response
       }),
       catchError(error => {

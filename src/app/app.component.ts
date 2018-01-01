@@ -17,6 +17,8 @@ import {WidgetsRUsUserService} from "./widgets-r-us-users.service";
           <wru-register></wru-register>
         </mat-tab>
       </mat-tab-group>
+      <widget-edit *ngIf="isLoggedIn()">
+      </widget-edit>
     </mat-sidenav-container>
     
   `,
