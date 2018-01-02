@@ -19,7 +19,7 @@ import "rxjs/add/operator/filter";
   `,
   styles: [`
     .user-flow-error-message {
-      padding: 32px;
+      color: red;
     }
 
     .register-form {
@@ -46,10 +46,11 @@ export class RegisterComponent {
 
   register() {
     this.widgetsRUsUserService.register(<WidgetsRUsUser>{username: this.username.value}).subscribe(response => {
-      if (response['context'] && response['code'] && response['message'])
-        this.userFlowErrorMessage = response['message']
-      else
-        this.widgetsRUsUserService.currentlyLoggedInAccount = (<any>response).data
+      if (((<any>response).status < 200 || (<any>response).status >= 300) && (<any>response).error) {
+        this.userFlowErrorMessage = (<any>response).error.message.message
+      } else {
+
+      }
     })
   }
 }

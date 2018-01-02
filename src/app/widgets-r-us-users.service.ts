@@ -14,10 +14,11 @@ export class WidgetsRUsUserService {
   }
 
   register(widgetsRUsUser: WidgetsRUsUser): Observable<WidgetsRUsUser | WidgetsRUsError> {
-    const url = `${this.wruApiUrl}/users/register`
+    const url = `${this.wruApiUrl}/user/register`
     return this.http.post<WidgetsRUsError | WidgetsRUsUser>(url, widgetsRUsUser).pipe(
       map(response => {
         console.log(response)
+        this.currentlyLoggedInAccount = (<any>response).message
         return response
       }),
       catchError(error => {
@@ -28,10 +29,11 @@ export class WidgetsRUsUserService {
   }
 
   login(widgetsRUsUser: WidgetsRUsUser): Observable<WidgetsRUsUser | WidgetsRUsError> {
-    const url = `${this.wruApiUrl}/users/login`
+    const url = `${this.wruApiUrl}/user/login`
     return this.http.post<WidgetsRUsError | WidgetsRUsUser>(url, widgetsRUsUser).pipe(
       map(response => {
         console.log(response)
+        this.currentlyLoggedInAccount = (<any>response).message
         return response
       }),
       catchError(error => {
@@ -42,7 +44,7 @@ export class WidgetsRUsUserService {
   }
 
   logout() {
-    const url = `${this.wruApiUrl}/users/logout`
+    const url = `${this.wruApiUrl}/user/logout`
     return this.http.post<WidgetsRUsUser | WidgetsRUsError>(url, {}).pipe(
       map(response => {
         console.log(response)

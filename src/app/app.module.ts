@@ -9,12 +9,15 @@ import {RegisterComponent} from "./register.component";
 import {LoginComponent} from "./login.component";
 import {WidgetsRUsUserService} from "./widgets-r-us-users.service";
 import {BrowserAnimationsModule} from "@angular/platform-browser/animations";
+import {WidgetEditComponent} from "./widget-edit.component";
+import {WidgetService} from "./widget.service";
 
 
 @NgModule({
   declarations: [
     LoginComponent,
     RegisterComponent,
+    WidgetEditComponent,
     AppComponent
   ],
   imports: [
@@ -27,7 +30,8 @@ import {BrowserAnimationsModule} from "@angular/platform-browser/animations";
   ],
   providers: [
     {provide: WRU_API_URL_TOKEN, useValue: LOCAL_WRU_API_URL},
-    WidgetsRUsUserService
+    WidgetsRUsUserService,
+    WidgetService
   ],
   bootstrap: [AppComponent]
 })

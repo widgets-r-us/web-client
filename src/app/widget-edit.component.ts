@@ -1,4 +1,4 @@
-import {Component} from "@angular/core";
+import {Component, OnInit} from "@angular/core";
 import {WidgetsRUsUserService} from "./widgets-r-us-users.service";
 import {WidgetService} from "./widget.service";
 import {FormGroup} from "@angular/forms";
@@ -20,7 +20,7 @@ import {FormGroup} from "@angular/forms";
   styles: [`
   `]
 })
-export class WidgetEditComponent {
+export class WidgetEditComponent implements OnInit {
 
   widgetEditForm: FormGroup
 
@@ -55,6 +55,8 @@ export class WidgetEditComponent {
     this.recursivelyGenerateCategoriesHtml(this.categories.root, document.getElementById('rootCategoriesElement'))
   }
 
-
+  ngOnInit(): void {
+    this.generateCategoriesHtml()
+  }
 
 }

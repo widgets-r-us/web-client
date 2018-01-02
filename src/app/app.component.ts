@@ -20,7 +20,6 @@ import {WidgetsRUsUserService} from "./widgets-r-us-users.service";
       <widget-edit *ngIf="isLoggedIn()">
       </widget-edit>
     </mat-sidenav-container>
-    
   `,
   styles: [`
     img.logo {

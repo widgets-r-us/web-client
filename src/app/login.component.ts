@@ -13,12 +13,12 @@ import {WidgetsRUsUser} from './models'
         <input matInput type="text" class="full-width" formControlName="username" placeholder="Username"/>
       </mat-form-field>
       <br/>
-      <button type="submit" mat-raised-button style="text-align:center">Login</button>
+      <button type="submit" mat-raised-button style="text-align:center" (click)="login()">Login</button>
     </form>
   `,
   styles: [`    
     .user-flow-error-message {
-      padding: 32px;
+      color: red;
     }
     .login-form {
       padding-top: 16px;
@@ -38,6 +38,12 @@ export class LoginComponent {
   }
 
   login() {
-    this.widgetsRUsUserService.login(<WidgetsRUsUser>{username: this.username.value})
+    this.widgetsRUsUserService.login(<WidgetsRUsUser>{username: this.username.value}).subscribe(response => {
+      if (((<any>response).status < 200 || (<any>response).status >= 300) && (<any>response).error) {
+        this.userFlowErrorMessage = (<any>response).error.message.message
+      } else {
+
+      }
+    })
   }
 }
