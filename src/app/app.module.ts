@@ -5,19 +5,42 @@ import {LOCAL_WRU_API_URL, WRU_API_URL_TOKEN} from "./injection-tokens";
 import {HttpClientModule} from "@angular/common/http";
 import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 import {WidgetsRUsStyleModule} from "./widgets-r-us-style.module";
-import {RegisterComponent} from "./register.component";
-import {LoginComponent} from "./login.component";
-import {WidgetsRUsUserService} from "./widgets-r-us-users.service";
+import {RegisterComponent} from "./widgets-r-us-user/register.component";
+import {LoginComponent} from "./widgets-r-us-user/login.component";
+import {WidgetsRUsUserService} from "./widgets-r-us-user/widgets-r-us-user.service";
 import {BrowserAnimationsModule} from "@angular/platform-browser/animations";
-import {WidgetEditComponent} from "./widget-edit.component";
-import {WidgetService} from "./widget.service";
+import {WidgetEditComponent} from "./widget/widget-edit.component";
+import {WidgetService} from "./widget/widget.service";
+import {WruHeaderComponent} from "./wru-header.component";
+import {WidgetCategoriesComponent} from "./widget/widget-categories.component";
+import { AppRoutingModule } from './/app-routing.module';
+import {WidgetSearchComponent} from "./widget/widget-search.component";
+import {AuthComponent} from "./widgets-r-us-user/auth.component";
+import {WidgetDetailsComponent} from "./widget/widget-details.component";
+import {OrderComponent} from "./order.component";
+import {WidgetsRUsUserComponent} from "./widgets-r-us-user/widgets-r-us-user.component";
+import {RouterModule} from "@angular/router";
+import {WidgetCategoryComponent} from "./widget/widget-category.component";
+import {WidgetCategoryOptionComponent} from "./widget/widget-category-option.component";
+import {NewWidgetCategoryComponent} from "./widget/new-widget-category.component";
+import {ComponentLoader} from "./component-loader";
 
 
 @NgModule({
   declarations: [
     LoginComponent,
     RegisterComponent,
+    AuthComponent,
+    WidgetsRUsUserComponent,
+    WidgetDetailsComponent,
     WidgetEditComponent,
+    WidgetSearchComponent,
+    WidgetCategoryComponent,
+    NewWidgetCategoryComponent,
+    WidgetCategoryOptionComponent,
+    WidgetCategoriesComponent,
+    OrderComponent,
+    WruHeaderComponent,
     AppComponent
   ],
   imports: [
@@ -26,12 +49,18 @@ import {WidgetService} from "./widget.service";
     FormsModule,
     ReactiveFormsModule,
     BrowserAnimationsModule,
+    RouterModule,
     WidgetsRUsStyleModule,
+    AppRoutingModule,
   ],
   providers: [
     {provide: WRU_API_URL_TOKEN, useValue: LOCAL_WRU_API_URL},
+    ComponentLoader,
     WidgetsRUsUserService,
     WidgetService
+  ],
+  entryComponents: [
+    NewWidgetCategoryComponent
   ],
   bootstrap: [AppComponent]
 })

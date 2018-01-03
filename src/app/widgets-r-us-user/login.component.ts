@@ -1,8 +1,8 @@
-import {Component, Inject} from '@angular/core'
+import {Component, Inject, OnInit} from '@angular/core'
 import {FormBuilder, FormControl, FormGroup, Validators} from "@angular/forms"
 import "rxjs/add/observable/of"
-import {WidgetsRUsUserService} from "./widgets-r-us-users.service"
-import {WidgetsRUsUser} from './models'
+import {WidgetsRUsUserService} from "./widgets-r-us-user.service"
+import {WidgetsRUsUser} from '../models'
 
 @Component({
   selector: 'wru-login',
@@ -42,7 +42,7 @@ export class LoginComponent {
       if (((<any>response).status < 200 || (<any>response).status >= 300) && (<any>response).error) {
         this.userFlowErrorMessage = (<any>response).error.message.message
       } else {
-
+        // successful login
       }
     })
   }

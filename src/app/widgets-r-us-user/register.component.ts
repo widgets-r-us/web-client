@@ -1,8 +1,8 @@
 import {Component, Inject} from '@angular/core';
 import {FormBuilder, FormControl, FormGroup, Validators} from "@angular/forms";
-import {WidgetsRUsUser, WidgetsRUsError} from './models'
+import {WidgetsRUsUser, WidgetsRUsError} from '../models'
 import "rxjs/add/observable/of";
-import {WidgetsRUsUserService} from "./widgets-r-us-users.service";
+import {WidgetsRUsUserService} from "./widgets-r-us-user.service";
 import "rxjs/add/operator/filter";
 
 @Component({

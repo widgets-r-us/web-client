@@ -1,9 +1,9 @@
 import {Inject, Injectable} from "@angular/core"
-import {WRU_API_URL_TOKEN} from "./injection-tokens"
+import {WRU_API_URL_TOKEN} from "../injection-tokens"
 import {HttpClient} from "@angular/common/http"
 import {Observable} from "rxjs/Observable"
 import {catchError, map} from "rxjs/operators"
-import {Widget, WidgetsRUsError} from "./models"
+import {Widget, WidgetsRUsError} from "../models"
 
 @Injectable()
 export class WidgetService {
@@ -112,12 +112,12 @@ export class WidgetService {
     )
   }
 
-  createWidgetCategory(widgetId): Observable<Widget | WidgetsRUsError> {
+  createWidgetCategory(widgetCategory): Observable<Widget | WidgetsRUsError> {
     const url = `${this.wruApiUrl}/widget/createWidgetCategory`
-    return this.http.post<Widget | WidgetsRUsError>(url, {widgetId: widgetId}).pipe(
+    return this.http.post<Widget | WidgetsRUsError>(url, {widgetCategory: widgetCategory}).pipe(
       map(response => {
         console.log(response)
-        return response
+        return (<any>response).message
       }),
       catchError(error => {
         console.log(error)

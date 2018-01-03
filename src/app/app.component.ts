@@ -1,59 +1,85 @@
-import {Component} from '@angular/core';
-import {WidgetsRUsUserService} from "./widgets-r-us-users.service";
+import {Component, ViewEncapsulation} from '@angular/core';
+import {WidgetsRUsUserService} from "./widgets-r-us-user/widgets-r-us-user.service";
 
 @Component({
   selector: 'app-root',
   template: `
     <mat-sidenav-container>
-      <div class="full-width" style="text-align: center">
-        <h1>Welcome to {{title}}!</h1>
-        <img class="logo {{logoWidth}}" alt="Widgets R Us logo" src="../assets/widgets-r-us-logo.svg">
+      <wru-header *ngIf="isLoggedIn()"></wru-header>
+      <a class="heading" target="_blank" href="https://github.com/widgets-r-us/runner">
+        <div>
+          <div class="title-container {{titlePosition}}">{{title}}</div>
+          <img class="logo {{logoWidth}}" alt="Widgets R Us logo" src="../assets/widgets-r-us-logo.svg">
+        </div>
+      </a>
+      <div class="wru-body">
+        <router-outlet></router-outlet>
       </div>
-      <mat-tab-group *ngIf="!isLoggedIn()" class="full-width" dynamicHeight="true">
-        <mat-tab label="Login">
-          <wru-login></wru-login>
-        </mat-tab>
-        <mat-tab label="Register">
-          <wru-register></wru-register>
-        </mat-tab>
-      </mat-tab-group>
-      <widget-edit *ngIf="isLoggedIn()">
-      </widget-edit>
     </mat-sidenav-container>
   `,
   styles: [`
-    img.logo {
-      margin-bottom: 32px;
-      transition: width 0.5s, height 0.5s;
+    a.heading {
+      color: white;
+      background-color: white;
+      text-decoration: none !important;
     }
-    img.logo.large {
+    .logo {
+      position: absolute;
+      z-index: 2;
+      transition: all 1s ease;
+    }
+    .logo.large {
+      margin-top: 108px;
+      left: 50%;
+      transform: translateX(-50%);
       width: 200px;
     }
-    img.logo.small {
-      width: 64px;
+    .logo.small {
+      top: 5px;
+      left: 8px;
+      width: 54px;
     }
-    
-    .full-width {
-      margin: 0 auto;
-      min-width: 150px;
-      max-width: 500px;
-      width: 100%;
+    .title-container {
+      position: absolute;
+      z-index: 2;
+      text-shadow: 0 1px 2px rgba(0,0,0,0.20);
+      transition: all 1s ease;
     }
-  `]
+    .title-container.front-center {
+      margin-top: 64px;
+      left: 50%;
+      transform: translateX(-50%);
+      font-size: 36px;
+    }
+    .title-container.top-left {
+      text-align: left;
+      top: 18px;
+      left: 78px;
+      font-size: 24px;
+    }
+    .wru-body {
+      margin-top: 64px;
+    }
+  `],
 })
 export class AppComponent {
-  title = 'Widgets-R-Us';
+  title = 'Welcome to Widgets-R-Us!';
   logoWidth = 'large'
+  titlePosition = 'front-center'
 
   constructor(private widgetsRUsUserService: WidgetsRUsUserService) {
   }
 
   isLoggedIn() {
-    if (this.widgetsRUsUserService.currentlyLoggedInAccount._id == '-1') {
+    if (this.widgetsRUsUserService.authenticatedUser._id == '-1') {
       this.logoWidth = 'large'
+      this.titlePosition = 'front-center'
+      this.title = 'Welcome to Widgets-R-Us!'
       return false
     } else {
       this.logoWidth = 'small'
+      this.titlePosition = 'top-left'
+      this.title = 'Widgets-R-Us'
       return true
     }
 
