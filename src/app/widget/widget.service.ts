@@ -3,10 +3,15 @@ import {WRU_API_URL_TOKEN} from "../injection-tokens"
 import {HttpClient} from "@angular/common/http"
 import {Observable} from "rxjs/Observable"
 import {catchError, map} from "rxjs/operators"
-import {Widget, WidgetsRUsError} from "../models"
+import {ApiResponse, Widget, WidgetAttribute, WidgetsRUsError} from "../models"
+import {WruEvent} from "../../wru-event";
 
 @Injectable()
 export class WidgetService {
+
+  widgetAttributesChanged = new WruEvent<any>()
+  widgetCategoriesChanged = new WruEvent<any>()
+  widgetChanged = new WruEvent<any>()
 
   constructor(private http: HttpClient, @Inject(WRU_API_URL_TOKEN) private wruApiUrl: string) {
   }
@@ -114,7 +119,7 @@ export class WidgetService {
 
   createWidgetCategory(widgetCategory): Observable<Widget | WidgetsRUsError> {
     const url = `${this.wruApiUrl}/widget/createWidgetCategory`
-    return this.http.post<Widget | WidgetsRUsError>(url, {widgetCategory: widgetCategory}).pipe(
+    return this.http.post<Widget | WidgetsRUsError>(url, {widgetCategoryName: widgetCategory}).pipe(
       map(response => {
         console.log(response)
         return (<any>response).message
@@ -168,9 +173,9 @@ export class WidgetService {
     )
   }
 
-  deleteWidgetCategoryOption(widgetId): Observable<Widget | WidgetsRUsError> {
+  deleteWidgetCategoryOption(widgetCategoryOptionId): Observable<Widget | WidgetsRUsError> {
     const url = `${this.wruApiUrl}/widget/deleteWidgetCategoryOption`
-    return this.http.post<Widget | WidgetsRUsError>(url, {widgetId: widgetId}).pipe(
+    return this.http.request<Widget | WidgetsRUsError>('DELETE', url, {body: {widgetCategoryOptionId: widgetCategoryOptionId}}).pipe(
       map(response => {
         console.log(response)
         return response
@@ -182,12 +187,13 @@ export class WidgetService {
     )
   }
 
-  createWidgetAttribute(widgetId): Observable<Widget | WidgetsRUsError> {
+  createWidgetAttribute(widgetAttributeName): Observable<WidgetAttribute | WidgetsRUsError> {
     const url = `${this.wruApiUrl}/widget/createWidgetAttribute`
-    return this.http.post<Widget | WidgetsRUsError>(url, {widgetId: widgetId}).pipe(
+    return this.http.post<ApiResponse>(url, {widgetAttributeName: widgetAttributeName}).pipe(
       map(response => {
         console.log(response)
-        return response
+        this.widgetAttributesChanged.invoke('createWidgetAttribute', response.message)
+        return response.message
       }),
       catchError(error => {
         console.log(error)
@@ -196,11 +202,26 @@ export class WidgetService {
     )
   }
 
-  deleteWidgetAttribute(widgetId): Observable<Widget | WidgetsRUsError> {
-    const url = `${this.wruApiUrl}/widget/deleteWidgetAttribute`
-    return this.http.post<Widget | WidgetsRUsError>(url, {widgetId: widgetId}).pipe(
+  getWidgetAttributes(): Observable<WidgetAttribute[] | WidgetsRUsError> {
+    const url = `${this.wruApiUrl}/widget/getWidgetAttributes`
+    return this.http.get<ApiResponse>(url).pipe(
       map(response => {
         console.log(response)
+        return response.message
+      }),
+      catchError(error => {
+        console.log(error)
+        return Observable.of(error)
+      })
+    )
+  }
+
+  deleteWidgetAttribute(widgetAttributeId): Observable<WidgetAttribute | WidgetsRUsError> {
+    const url = `${this.wruApiUrl}/widget/deleteWidgetAttribute`
+    return this.http.request<Widget | WidgetsRUsError>('DELETE', url, {body: {widgetAttributeId: widgetAttributeId}}).pipe(
+      map(response => {
+        console.log(response)
+        this.widgetAttributesChanged.invoke('deleteWidgetAttribute', widgetAttributeId)
         return response
       }),
       catchError(error => {

@@ -7,11 +7,13 @@ import {DOCUMENT} from "@angular/common";
 @Component({
   selector: 'new-widget-category',
   template:`
-    <form [formGroup]="widgetCategory" (ngSubmit)="createWidgetCategoryOrOption()">
+    <form [formGroup]="widgetCategoryForm" (ngSubmit)="createWidgetCategoryOrOption()">
       <mat-form-field>
-        <input matInput formControlName="name" placeholder="Category name"/>
+        <input matInput formControlName="widgetCategoryName" placeholder="Category name"/>
       </mat-form-field>
-      <button mat-icon-button (click)="createWidgetCategoryOrOption()"><mat-icon>add</mat-icon></button>
+      <button mat-icon-button (click)="createWidgetCategoryOrOption()">
+        <mat-icon>add</mat-icon>
+      </button>
     </form>
   `,
   styles: [`
@@ -19,24 +21,21 @@ import {DOCUMENT} from "@angular/common";
 })
 export class NewWidgetCategoryComponent {
 
-  widgetCategory: FormGroup
-  name = new FormControl('', Validators.required)
+  widgetCategoryForm: FormGroup
+  widgetCategoryName = new FormControl('', Validators.required)
 
   categories: any
 
-  constructor(private widgetsRUsUserService: WidgetsRUsUserService, private widgetService: WidgetService,
-              @Inject(FormBuilder) private formBuilder: FormBuilder, @Inject(DOCUMENT) private document: Document) {
-    this.widgetCategory = this.formBuilder.group({
-      'name': this.name
+  constructor(private widgetService: WidgetService, @Inject(FormBuilder) private formBuilder: FormBuilder) {
+    this.widgetCategoryForm = this.formBuilder.group({
+      "widgetCategoryName": this.widgetCategoryName
     })
   }
 
   createWidgetCategoryOrOption() {
-    this.widgetService.createWidgetCategory(this.name.value).subscribe(response => {
+    this.widgetService.createWidgetCategory(this.widgetCategoryName.value).subscribe(response => {
       console.log(response)
     })
   }
-
-
 
 }

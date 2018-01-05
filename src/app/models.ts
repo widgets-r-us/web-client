@@ -8,47 +8,33 @@ export interface WidgetsRUsError {
   data: string
   createdAt: Date
 }
-export interface WidgetType {
-  _id: string
-  widgetType: string
-}
-export interface WidgetFinish {
-  _id: string
-  widgetFinish: string
-}
-export interface WidgetSize {
-  _id: string
-  widgetSize: string
-}
 export interface Widget {
   _id: string
   name: string
-  widgetTypeId: string
-  widgetFinishId: string
-  widgetSizeId: string
 }
-export interface CustomWidgetAttribute {
+export interface WidgetAttribute {
   _id: string
-  customWidgetAttribute: string
+  widgetAttributeName: string
 }
-export interface CustomWidgetAttributeWidget {
+export interface WidgetXWidgetAttribute {
   _id: string
-  customWidgetAttributeId: string
+  widgetAttributeId: string
   widgetId: string
 }
-export interface CustomWidgetCategory {
+export interface WidgetCategory {
   _id: string
-  customWidgetCategory: string
+  parentId: string
+  widgetCategoryName: string
 }
-export interface CustomWidgetCategoryOption {
+export interface WidgetCategoryOption {
   _id: string
-  customWidgetCategoryId: string
-  customWidgetCategoryOption: string
+  parentId: string
+  widgetCategoryOptionName: string
 }
-export interface CustomWidgetCategoryOptionWidget {
+export interface WidgetXWidgetCategoryOption {
   _id: string
-  customWidgetCategoryOptionId: string
   widgetId: string
+  widgetCategoryOptionId: string
 }
 export interface WidgetsRUsUser {
   _id: string
@@ -61,13 +47,17 @@ export interface Order {
 export interface Product {
   _id: string
   merchandiseId: string
-  name: string
+  productName: string
   quantity: Number
   price: Number
 }
-export interface OrderProduct {
+export interface OrderXProduct {
   _id: string
   orderId: string
   productId: string
   quantityToBuy: Number
+}
+export interface ApiResponse {
+  status: string
+  message: any
 }

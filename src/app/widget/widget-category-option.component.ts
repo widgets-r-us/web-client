@@ -8,18 +8,6 @@ import {DOCUMENT} from "@angular/common";
   selector: 'widget-edit',
   template:`
     <div *ngIf="errorMessage" class="error-message" [innerHTML]="errorMessage"></div>
-    <div class="widget-edit-container">
-      <form [formGroup]="widgetEditForm" (ngSubmit)="saveWidget()" class="widget-edit-form">
-        <mat-form-field>
-          <input matInput type="text" class="full-width" formControlName="name" placeholder="Widget name"/>
-        </mat-form-field>
-        <br/>
-        <button mat-raised-button color="warn" style="text-align: center;">Cancel</button>
-        <button type="submit" mat-raised-button color="primary" style="text-align:center">Save</button>
-      </form>
-      <span class="divider"></span>
-      <widget-categories></widget-categories>
-    </div>
   `,
   styles: [`
     .widget-edit-form {
@@ -36,21 +24,19 @@ import {DOCUMENT} from "@angular/common";
 })
 export class WidgetCategoryOptionComponent {
 
-  widgetEditForm: FormGroup
-  name = new FormControl('', Validators.required)
+  widgetCategoryOptionForm: FormGroup
+  widgetCategoryOptionName = new FormControl('', Validators.required)
 
   categories: any
 
   constructor(private widgetsRUsUserService: WidgetsRUsUserService, private widgetService: WidgetService,
               @Inject(FormBuilder) private formBuilder: FormBuilder, @Inject(DOCUMENT) private document: Document) {
-    this.widgetEditForm = this.formBuilder.group({
-      'name': this.name
+    this.widgetCategoryOptionForm = this.formBuilder.group({
+      "widgetCategoryOptionName": this.widgetCategoryOptionName
     })
   }
 
-  async saveWidget() {
-    /*if (this.widgetService.exists(widgetId))
-    this.widgetService.createWidget()*/
+  saveWidgetCategoryOption() {
   }
 
 

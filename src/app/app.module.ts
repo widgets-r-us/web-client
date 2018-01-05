@@ -20,10 +20,13 @@ import {WidgetDetailsComponent} from "./widget/widget-details.component";
 import {OrderComponent} from "./order.component";
 import {WidgetsRUsUserComponent} from "./widgets-r-us-user/widgets-r-us-user.component";
 import {RouterModule} from "@angular/router";
-import {WidgetCategoryComponent} from "./widget/widget-category.component";
 import {WidgetCategoryOptionComponent} from "./widget/widget-category-option.component";
 import {NewWidgetCategoryComponent} from "./widget/new-widget-category.component";
 import {ComponentLoader} from "./component-loader";
+import {WidgetAttributesComponent} from "./widget/widget-attributes.component";
+import {NewWidgetAttributeComponent} from "./widget/new-widget-attribute.component";
+import {WidgetAttributeComponent} from "./widget/widget-attribute.component";
+import {WidgetCategoryComponent} from "./widget/widget-category.component";
 
 
 @NgModule({
@@ -32,13 +35,16 @@ import {ComponentLoader} from "./component-loader";
     RegisterComponent,
     AuthComponent,
     WidgetsRUsUserComponent,
-    WidgetDetailsComponent,
-    WidgetEditComponent,
-    WidgetSearchComponent,
     WidgetCategoryComponent,
     NewWidgetCategoryComponent,
     WidgetCategoryOptionComponent,
     WidgetCategoriesComponent,
+    NewWidgetAttributeComponent,
+    WidgetAttributeComponent,
+    WidgetAttributesComponent,
+    WidgetSearchComponent,
+    WidgetDetailsComponent,
+    WidgetEditComponent,
     OrderComponent,
     WruHeaderComponent,
     AppComponent

@@ -9,10 +9,15 @@ import {ComponentLoader} from "../component-loader";
 @Component({
   selector: 'widget-categories',
   template:`
+    <div class="header"><strong>Add/Remove Categories</strong></div>
     <div *ngIf="errorMessage" class="error-message" [innerHTML]="errorMessage"></div>
     <template #rootCategoriesElement></template>
   `,
   styles: [`
+    .header {
+      font-size: 16px;
+      margin-bottom: 16px;
+    }
   `]
 })
 export class WidgetCategoriesComponent implements AfterViewInit {
@@ -34,7 +39,7 @@ export class WidgetCategoriesComponent implements AfterViewInit {
     for (const category of categories) {
       // create element and add content
       let htmlCategory = this.document.createElement('div')
-      htmlCategory.textContent = category.widgetCategory
+      htmlCategory.textContent = category.widgetCategoryName
 
       // append this element to the passed in html element
       html.appendChild(htmlCategory)
@@ -42,6 +47,8 @@ export class WidgetCategoriesComponent implements AfterViewInit {
       // then call this function recursively on all this category's children (assuming it has children).
       if (category.children)
         this.recursivelyGenerateCategoriesHtml(category.children, htmlCategory)
+
+      this.componentLoader.loadComponent(NewWidgetCategoryComponent)
     }
 
     this.componentLoader.loadComponent(NewWidgetCategoryComponent)
