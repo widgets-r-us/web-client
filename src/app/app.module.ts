@@ -22,11 +22,13 @@ import {WidgetsRUsUserComponent} from "./widgets-r-us-user/widgets-r-us-user.com
 import {RouterModule} from "@angular/router";
 import {WidgetCategoryOptionComponent} from "./widget/widget-category-option.component";
 import {NewWidgetCategoryComponent} from "./widget/new-widget-category.component";
-import {ComponentLoader} from "./component-loader";
+import {DynamicComponentLoader} from "./component-loader";
 import {WidgetAttributesComponent} from "./widget/widget-attributes.component";
 import {NewWidgetAttributeComponent} from "./widget/new-widget-attribute.component";
 import {WidgetAttributeComponent} from "./widget/widget-attribute.component";
 import {WidgetCategoryComponent} from "./widget/widget-category.component";
+import {AssociatedWidgetCategoryOptionComponent} from "./widget/associated-widget-category-option.component";
+import {AddWidgetCategoryToWidgetComponent} from "./widget/add-widget-category-to-widget.component";
 
 
 @NgModule({
@@ -39,6 +41,8 @@ import {WidgetCategoryComponent} from "./widget/widget-category.component";
     NewWidgetCategoryComponent,
     WidgetCategoryOptionComponent,
     WidgetCategoriesComponent,
+    AssociatedWidgetCategoryOptionComponent,
+    AddWidgetCategoryToWidgetComponent,
     NewWidgetAttributeComponent,
     WidgetAttributeComponent,
     WidgetAttributesComponent,
@@ -50,18 +54,18 @@ import {WidgetCategoryComponent} from "./widget/widget-category.component";
     AppComponent
   ],
   imports: [
+    WidgetsRUsStyleModule,
     BrowserModule,
     HttpClientModule,
     FormsModule,
     ReactiveFormsModule,
     BrowserAnimationsModule,
     RouterModule,
-    WidgetsRUsStyleModule,
     AppRoutingModule,
   ],
   providers: [
     {provide: WRU_API_URL_TOKEN, useValue: LOCAL_WRU_API_URL},
-    ComponentLoader,
+    DynamicComponentLoader,
     WidgetsRUsUserService,
     WidgetService
   ],

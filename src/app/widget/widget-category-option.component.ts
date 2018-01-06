@@ -5,7 +5,7 @@ import {FormBuilder, FormControl, FormGroup, Validators} from "@angular/forms";
 import {DOCUMENT} from "@angular/common";
 
 @Component({
-  selector: 'widget-edit',
+  selector: 'widget-category-option',
   template:`
     <div *ngIf="errorMessage" class="error-message" [innerHTML]="errorMessage"></div>
   `,

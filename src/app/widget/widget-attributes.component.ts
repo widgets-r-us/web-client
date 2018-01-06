@@ -6,20 +6,25 @@ import {animate, group, state, style, transition, trigger} from "@angular/animat
 @Component({
   selector: 'widget-attributes',
   template: `
-    <div class="header"><strong>Add/Remove Attributes</strong></div>
-    <div *ngIf="errorMessage" class="error-message" [innerHTML]="errorMessage"></div>
-    <widget-attribute *ngFor="let widgetAttribute of widgetAttributes"
-                      [widgetAttribute]="widgetAttribute"
-                      [@fadeIn] [@fadeOut]></widget-attribute>
-    <new-widget-attribute></new-widget-attribute>
+    <div class="container">
+      <div class="header"><strong>Add/Remove Attributes</strong></div>
+      <div *ngIf="errorMessage" class="error-message" [innerHTML]="errorMessage"></div>
+      <widget-attribute *ngFor="let widgetAttribute of widgetAttributes"
+                        [widgetAttribute]="widgetAttribute"
+                        [@fadeIn] [@fadeOut]></widget-attribute>
+      <new-widget-attribute></new-widget-attribute>
+    </div>
   `,
   styles: [`
+    .container {
+      transition: all 0.2s;
+    }
     .header {
       font-size: 16px;
       margin-bottom: 16px;
     }
-    widget-attribute {
-      height: 230px;
+    .error-message {
+      color: red;
     }
   `],
   animations: [
@@ -38,8 +43,8 @@ import {animate, group, state, style, transition, trigger} from "@angular/animat
 })
 export class WidgetAttributesComponent implements AfterViewInit {
 
-  private widgetAttributes = <WidgetAttribute[]>[]
-  errorMessage = ''
+  widgetAttributes = <WidgetAttribute[]>[]
+  private errorMessage = ''
 
   constructor(private widgetService: WidgetService) {
     widgetService.widgetAttributesChanged.addHandler((event, val) => this.widgetAttributesChangedHandler(event, val))
@@ -47,8 +52,8 @@ export class WidgetAttributesComponent implements AfterViewInit {
 
   ngAfterViewInit(): void {
     this.widgetService.getWidgetAttributes().subscribe(widgetAttributes => {
-      if (widgetAttributes['context'] && widgetAttributes['code'] && widgetAttributes['message']) {
-        // there was an error getting the widget attributes
+      if (widgetAttributes['error'] || (widgetAttributes['context'] && widgetAttributes['code'] && widgetAttributes['message'])) {
+        this.errorMessage = 'Unable to load attributes'
       } else {
         console.log(widgetAttributes)
         this.widgetAttributes = <WidgetAttribute[]>widgetAttributes
@@ -63,7 +68,8 @@ export class WidgetAttributesComponent implements AfterViewInit {
       let index = this.widgetAttributes.findIndex(widgetAttribute => {
         return widgetAttribute._id === value
       })
-      this.widgetAttributes.splice(index, 1)
+      if (index != -1)
+        this.widgetAttributes.splice(index, 1)
     }
   }
 

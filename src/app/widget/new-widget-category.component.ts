@@ -1,8 +1,6 @@
-import {AfterViewInit, Component, Inject, OnInit, ViewChild} from "@angular/core";
-import {WidgetsRUsUserService} from "../widgets-r-us-user/widgets-r-us-user.service";
+import {Component, Inject} from "@angular/core";
 import {WidgetService} from "./widget.service";
 import {FormBuilder, FormControl, FormGroup, Validators} from "@angular/forms";
-import {DOCUMENT} from "@angular/common";
 
 @Component({
   selector: 'new-widget-category',
@@ -23,8 +21,6 @@ export class NewWidgetCategoryComponent {
 
   widgetCategoryForm: FormGroup
   widgetCategoryName = new FormControl('', Validators.required)
-
-  categories: any
 
   constructor(private widgetService: WidgetService, @Inject(FormBuilder) private formBuilder: FormBuilder) {
     this.widgetCategoryForm = this.formBuilder.group({

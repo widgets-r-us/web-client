@@ -1,7 +1,7 @@
 import {ComponentFactoryResolver, Inject, Injectable} from "@angular/core";
 
 @Injectable()
-export class ComponentLoader {
+export class DynamicComponentLoader {
 
   rootViewContainerRef
 

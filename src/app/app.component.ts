@@ -35,6 +35,7 @@ import {WidgetsRUsUserService} from "./widgets-r-us-user/widgets-r-us-user.servi
       width: 200px;
     }
     .logo.small {
+      position: fixed;
       top: 5px;
       left: 8px;
       width: 54px;
@@ -52,6 +53,7 @@ import {WidgetsRUsUserService} from "./widgets-r-us-user/widgets-r-us-user.servi
       font-size: 36px;
     }
     .title-container.top-left {
+      position: fixed;
       text-align: left;
       top: 18px;
       left: 78px;

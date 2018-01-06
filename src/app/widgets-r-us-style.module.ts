@@ -1,6 +1,6 @@
 import {
   MatButtonModule, MatCheckboxModule, MatSidenavModule, MatAutocompleteModule,
-  MatFormFieldModule, MatInputModule, MatIcon, MatIconModule, MatTabsModule, MatSelectModule
+  MatFormFieldModule, MatInputModule, MatIcon, MatIconModule, MatTabsModule, MatSelectModule, MatChipsModule
 } from '@angular/material'
 import {NgModule} from "@angular/core";
 import {OVERLAY_PROVIDERS, OverlayContainer} from "@angular/cdk/overlay";
@@ -16,16 +16,19 @@ import {OVERLAY_PROVIDERS, OverlayContainer} from "@angular/cdk/overlay";
     MatInputModule,
     MatIconModule,
     MatTabsModule,
+    MatChipsModule
   ],
   exports: [
     MatFormFieldModule,
     MatSidenavModule,
     MatButtonModule,
+    MatSelectModule,
     MatCheckboxModule,
     MatAutocompleteModule,
     MatInputModule,
     MatIconModule,
     MatTabsModule,
+    MatChipsModule
   ],
   providers: [
     OVERLAY_PROVIDERS

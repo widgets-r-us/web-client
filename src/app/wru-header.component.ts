@@ -17,6 +17,7 @@ import {Router} from "@angular/router";
       transition: all 2s;
       height: 0;
       width: 100%;
+      z-index: 2;
     }
     .logout-button {
       float: right;
