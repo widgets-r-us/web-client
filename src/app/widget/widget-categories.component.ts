@@ -24,10 +24,7 @@ import {DynamicComponentLoader} from "../component-loader";
 })
 export class WidgetCategoriesComponent implements AfterViewInit {
 
-  @ViewChild('rootCategoriesElement', {read: ViewContainerRef})
-  private rootCategoriesElement
-
-  widgetCategories: any
+  @ViewChild('rootCategoriesElement', {read: ViewContainerRef}) rootCategoriesElement
 
   private errorMessage = ''
 
@@ -38,7 +35,8 @@ export class WidgetCategoriesComponent implements AfterViewInit {
               @Inject(ViewContainerRef) viewContainerRef) {
   }
 
-  recursivelyGenerateCategoriesHtml(categories, html) {
+/*  recursivelyGenerateCategoriesHtml(categories, html) {
+    console.log('insideRecusiveCall: '+ html)
     for (const category of categories) {
       // create element and add content
       let htmlCategory = this.document.createElement('div')
@@ -58,8 +56,9 @@ export class WidgetCategoriesComponent implements AfterViewInit {
   }
 
   generateCategoriesHtml() {
-    this.recursivelyGenerateCategoriesHtml(this.widgetCategories.categoryTree, this.rootCategoriesElement.nativeElement)
-  }
+    console.log(this.rootCategoriesElement)
+    this.recursivelyGenerateCategoriesHtml(this.widgetService.widgetCategories.children, this.rootCategoriesElement._data.renderElement)
+  }*/
 
   ngAfterViewInit(): void {
     this.componentLoader.setRootViewContainerRef(this.rootCategoriesElement)
@@ -67,8 +66,7 @@ export class WidgetCategoriesComponent implements AfterViewInit {
       if (response['error']) {
         this.errorMessage = 'Unable to load categories'
       } else {
-        this.widgetCategories = response.message
-        this.generateCategoriesHtml()
+        /*this.generateCategoriesHtml()*/
       }
     })
   }

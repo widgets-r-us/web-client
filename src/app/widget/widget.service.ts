@@ -9,9 +9,13 @@ import {WruEvent} from "../../wru-event";
 @Injectable()
 export class WidgetService {
 
+  readonly reservedRootWidgetCategoryName = 'reservedRootWidgetCategory'
+
   widgetAttributesChanged = new WruEvent<any>()
   widgetCategoriesChanged = new WruEvent<any>()
   widgetChanged = new WruEvent<any>()
+
+  widgetCategories = {}
 
   constructor(private http: HttpClient, @Inject(WRU_API_URL_TOKEN) private wruApiUrl: string) {
   }
@@ -135,6 +139,7 @@ export class WidgetService {
     const url = `${this.wruApiUrl}/widget/getWidgetCategoriesAndOptions`
     return this.http.get<any | WidgetsRUsError>(url).pipe(
       map(response => {
+        this.widgetCategories = response.message.categoryTreeRoot
         console.log(response)
         return response
       }),

@@ -19,40 +19,34 @@ import {WidgetCategory, WidgetCategoryOption} from "../models";
         <br/>
 
         <associated-widget-category-option *ngFor="let associatedOption of associatedWidgetCategoryOptions"
-                                           [widgetCategoryOption]="associatedOption"></associated-widget-category-option>
-
-        <add-widget-category-option-to-widget *ngIf="!sizeOptionAdded" [placeholder]="Size" [widgetCategory]="sizeWidgetCategory"
+                                           [widgetCategoryOption]="associatedOption"
+                                           (remove)="dissociateWidgetCategoryOptionWithWidget(associatedOption)">
+        </associated-widget-category-option>
+        
+        <add-widget-category-option-to-widget *ngIf="!sizeOptionAdded" 
+                                              [placeHolder]="sizePlaceholder" 
+                                              [widgetCategory]="sizeWidgetCategory"
                                               [treeDepth]="rootTreeDepth"
-                                              (selectedChild)="selectedSizeOption"></add-widget-category-option-to-widget>
-        <button *ngIf="selectedSizeOption.widgetCategoryOptionName" mat-icon-button
-                (click)="associateWidgetCategoryOptionWithWidget(selectedSizeOption)">
-          <mat-icon>add</mat-icon>
-        </button>
-
-        <add-widget-category-option-to-widget *ngIf="!finishOptionAdded" [placeholder]="Finish" [widgetCategory]="finishWidgetCategory"
+                                              (categoryOptionSelected)="associateWidgetCategoryOptionWithWidget($event)">
+        </add-widget-category-option-to-widget>
+        <add-widget-category-option-to-widget *ngIf="!finishOptionAdded" 
+                                              [placeHolder]="finishPlaceholder" 
+                                              [widgetCategory]="finishWidgetCategory"
                                               [treeDepth]="rootTreeDepth"
-                                              (selectedChild)="selectedFinishOption"></add-widget-category-option-to-widget>
-        <button *ngIf="selectedFinishOption.widgetCategoryOptionName" mat-icon-button
-                (click)="associateWidgetCategoryOptionWithWidget(selectedFinishOption)">
-          <mat-icon>add</mat-icon>
-        </button>
-
-        <add-widget-category-option-to-widget *ngIf="!typeOptionAdded" [placeholder]="Type" [widgetCategory]="typeWidgetCategory"
+                                              (categoryOptionSelected)="associateWidgetCategoryOptionWithWidget($event)">
+        </add-widget-category-option-to-widget>
+        <add-widget-category-option-to-widget *ngIf="!typeOptionAdded" 
+                                              [placeHolder]="typePlaceholder" 
+                                              [widgetCategory]="typeWidgetCategory"
                                               [treeDepth]="rootTreeDepth"
-                                              (selectedChild)="selectedTypeOption"></add-widget-category-option-to-widget>
-        <button *ngIf="selectedTypeOption.widgetCategoryOptionName" mat-icon-button
-                (click)="associateWidgetCategoryOptionWithWidget(selectedTypeOption)">
-          <mat-icon>add</mat-icon>
-        </button>
-
+                                              (categoryOptionSelected)="associateWidgetCategoryOptionWithWidget($event)">
+        </add-widget-category-option-to-widget>
         <add-widget-category-option-to-widget *ngIf="widgetCategoriesLessAlreadyAdded"
-                                              [placeholder]="Add category" [widgetCategory]="widgetCategoriesLessAlreadyAdded"
+                                              [placeHolder]="addCategoryPlaceholder" 
+                                              [widgetCategory]="widgetCategoriesLessAlreadyAdded"
                                               [treeDepth]="rootTreeDepth"
-                                              (selectedChild)="selectedOption"></add-widget-category-option-to-widget>
-        <button *ngIf="selectedOption.widgetCategoryOptionName" mat-icon-button
-                (click)="associateWidgetCategoryOptionWithWidget(selectedOption)">
-          <mat-icon>add</mat-icon>
-        </button>
+                                              (categoryOptionSelected)="associateWidgetCategoryOptionWithWidget($event)">
+        </add-widget-category-option-to-widget>
 
         <div class="associated-attributes" *ngIf="associatedWidgetAttributes">
           <mat-chip-list [@fadeIn]="" [@fadeOut]="">
@@ -188,7 +182,11 @@ import {WidgetCategory, WidgetCategoryOption} from "../models";
   ],
 })
 export class WidgetEditComponent {
-  isRemovable = true
+
+  readonly sizePlaceholder = 'Size'
+  readonly typePlaceholder = 'Type'
+  readonly finishPlaceholder = 'Finish'
+  readonly addCategoryPlaceholder = 'Add category'
 
   /*@Input() widget: Widget*/
   widgetEditForm: FormGroup
@@ -204,31 +202,23 @@ export class WidgetEditComponent {
   price = new FormControl('')
   quantity = new FormControl('')
 
-
   @ViewChild('widgetAttributesComponent') widgetAttributesComponent
   associatedWidgetAttributes = []
   selectedWidgetAttribute
 
-  @ViewChild('widgetCategoriesComponent') widgetCategoriesComponent
   associatedWidgetCategoryOptions = []
 
   /** The root categories that aren't required to be filled out */
   widgetCategoriesLessAlreadyAdded = []
   private readonly rootTreeDepth = 0
 
-  sizeWidgetCategory: WidgetCategory = null
-  finishWidgetCategory: WidgetCategory = null
-  typeWidgetCategory: WidgetCategory = null
+  sizeWidgetCategory: WidgetCategory = <WidgetCategory>{}
+  finishWidgetCategory: WidgetCategory = <WidgetCategory>{}
+  typeWidgetCategory: WidgetCategory = <WidgetCategory>{}
 
   sizeOptionAdded = false
   finishOptionAdded = false
   typeOptionAdded = false
-
-  selectedSizeOption: WidgetCategoryOption = null
-  selectedFinishOption: WidgetCategoryOption = null
-  selectedTypeOption: WidgetCategoryOption = null
-  selectedOption: WidgetCategoryOption = null
-
 
   constructor(private widgetService: WidgetService, @Inject(FormBuilder) private formBuilder: FormBuilder, private router: Router) {
     this.widgetEditForm = this.formBuilder.group({
@@ -241,9 +231,52 @@ export class WidgetEditComponent {
       "price": this.price,
       "quantity": this.quantity
     })
+
+    this.widgetService.getWidgetCategoriesAndOptions().subscribe(response => {
+      if (response['error']) {
+        this.widgetErrorMessage = "Couldn't load the widget categories"
+      } else {
+        this.widgetCategoriesLessAlreadyAdded = this.widgetService.widgetCategories
+
+        let sizeIndex = this.widgetService.widgetCategories.children.findIndex(widgetCategory => {
+          return widgetCategory.widgetCategoryName === 'Size'
+        })
+        let typeIndex = this.widgetService.widgetCategories.children.findIndex(widgetCategory => {
+          return widgetCategory.widgetCategoryName === 'Type'
+        })
+        let finishIndex = this.widgetService.widgetCategories.children.findIndex(widgetCategory => {
+          return widgetCategory.widgetCategoryName === 'Finish'
+        })
+
+        if (sizeIndex != -1) this.sizeWidgetCategory = this.widgetService.widgetCategories.children[sizeIndex]
+        if (typeIndex != -1) this.typeWidgetCategory = this.widgetService.widgetCategories.children[typeIndex]
+        if (finishIndex != -1) this.finishWidgetCategory = this.widgetService.widgetCategories.children[finishIndex]
+      }
+    })
   }
 
-  associateWidgetCategoryOptionWithWidget() {
+  associateWidgetCategoryOptionWithWidget(widgetCategoryOption) {
+    console.log(widgetCategoryOption)
+    this.associatedWidgetCategoryOptions.push(widgetCategoryOption)
+    let findRootCategory = widgetCategoryOption
+    while (findRootCategory.parent &&
+            findRootCategory.parent.widgetCategoryName != this.widgetService.reservedRootWidgetCategoryName) {
+      // find the root of this option
+      findRootCategory = findRootCategory.parent
+    }
+    if (findRootCategory.widgetCategoryName === 'Size') {
+      this.sizeOptionAdded = true
+    } else if (findRootCategory.widgetCategoryName === 'Type') {
+      this.typeOptionAdded = true
+    } else if (findRootCategory.widgetCategoryName === 'Finish') {
+      this.finishOptionAdded = true
+    } else if (findRootCategory) {
+
+    }
+
+
+    // TODO(ajmed): make sure to remove the category from the widgetCategoriesLessAlreadyAdded
+    // and reset the category
 
   }
 

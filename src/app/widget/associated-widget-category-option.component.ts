@@ -6,7 +6,8 @@ import {animate, style, transition, trigger} from "@angular/animations";
   selector: 'associated-widget-category-option',
   template:`
     <div class="container">
-      <mat-chip>{{widgetCategoryOption.widgetCategoryOptionName}}</mat-chip>
+      <mat-chip>{{widgetCategoryOption.displayString}}</mat-chip>
+      <!--<mat-icon matChipRemove>cancel</mat-icon>-->
     </div>
   `,
   styles: [`
